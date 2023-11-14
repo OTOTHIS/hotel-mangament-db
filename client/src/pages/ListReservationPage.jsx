@@ -27,7 +27,9 @@ useEffect(() => {getData()}, []);
       buttons: true,
       dangerMode: true,
     }).then((willDelete) => {
-      axios
+
+       if(willDelete){
+        axios
         .delete(`${SERVER_LINK}/reservation/${id}`)
         .then((res) => {
           getData();
@@ -36,6 +38,10 @@ useEffect(() => {getData()}, []);
           });
         })
         .catch((err) => console.log(err));
+       }else {
+        swal("Reservation not cancling !");
+       }
+      
     });
   };
 

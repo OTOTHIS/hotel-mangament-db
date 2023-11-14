@@ -35,6 +35,11 @@ export default function Reserver() {
           debut: convertDateFormat(debut.current.value),
           fin: convertDateFormat(fin.current.value),
         };
+
+        if(convertDateFormat(fin.current.value) < convertDateFormat(new Date()) ){
+          swal("Error", "Invalid fin de la date reservation", "error");
+          return false
+        }
         axios
           .post(`${SERVER_LINK}/reservation`, FormData)
           // eslint-disable-next-line no-unused-vars

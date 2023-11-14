@@ -1,10 +1,23 @@
-/* eslint-disable no-undef */
+
+
+import axios from "axios";
+import { useEffect, useState } from "react";
+import SERVER_LINK from "../partials/functions";
+import swal from "sweetalert";
 
 
 export default function ChambreDisponible() {
-  const { chambre } = useState([]);
+
+  const [chambres, setChambres] = useState([]);
 
 
+  useEffect(() => {
+    axios.get(`${SERVER_LINK}/chambres?dispo=1`)
+      .then(res => setChambres(res.data.data))
+      // eslint-disable-next-line no-unused-vars
+      .catch(err =>  swal("Error", "No chambre disponible", "error"));
+  }, []);
+  
 
 
 
@@ -12,14 +25,14 @@ export default function ChambreDisponible() {
     <section className="text-gray-600 body-font mt-5">
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-wrap -m-4">
-          {chambre.map((chambre, index) => (
+          { chambres ? chambres.map((chambre, index) => (
             <div className="lg:w-1/4 md:w-1/2 p-4 w-full" key={index}>
          
               <a className="block relative h-48 rounded overflow-hidden">
                 <img
-                  alt="ecommerce"
+                  alt="Hotel chambre"
                   className="object-cover object-center w-full h-full block"
-                  src={"./chambres/" + chambre?.image}
+                  src={`./chambres/${chambre?.type}.jpg `}
                 />
               </a>
               <div className="mt-4">
@@ -32,7 +45,8 @@ export default function ChambreDisponible() {
                 <p className="mt-1">{`${chambre?.prix}`} MAD</p>
               </div>
             </div>
-          ))}
+          )):<div className="text-lg text-center text-red-700">No chambre dispo</div>
+        }
         </div>
       </div>
     </section>

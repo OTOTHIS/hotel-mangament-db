@@ -1,4 +1,5 @@
 const chambreModel = require("../models/chambresModel");
+const reservationModel = require('../models/reservarionModel')
 const asyncHandler = require("express-async-handler");
 const ApiError = require("../utils/ApiError");
 
@@ -15,13 +16,27 @@ exports.getOneChambre = asyncHandler(async (req, res, next) => {
 });
 
 exports.getAllChambres = asyncHandler(async (req, res) => {
-  const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 5;
-  const skip = (page - 1) * limit;
-  const chambres = await chambreModel.find({}).skip(skip).limit(limit);
-  res.status(200).json({ results: chambres.length, page, data: chambres });
-});
+  try {
+    const { page = 1, limit = 5, dispo } = req.query;
+    const skip = (page - 1) * limit;
+    const mongooseQuery = chambreModel.find({}).skip(skip).limit(limit);
+    if (dispo==1) {
+      const reservations = await reservationModel.find({ fin: { $lt: new Date() } });
 
+      if (!reservations || reservations.length === 0) {
+        throw new ApiError('No chambre disponible', 404);
+      }
+      const chambreIds = reservations.map((reservation) => reservation.numero);
+      const chambres = await chambreModel.find({ _id: { $in: chambreIds } })
+      res.status(200).json({ results: chambres.length, page, data: chambres });
+    } else {
+      const chambres = await mongooseQuery;
+      res.status(200).json({ results: chambres.length, page, data: chambres });
+    }
+  } catch (error) {
+    res.status(error.status || 500).json({ error: error.message });
+  }
+});
 
 exports.getChambreByNumero = asyncHandler(async (req, res) => {
   const chambreId = req.params.numero;
@@ -33,20 +48,6 @@ exports.getChambreByNumero = asyncHandler(async (req, res) => {
 
 });
 
-exports.getDisponibleChambre = asyncHandler(async (req, res) => {
-
- if(req.query.dispo===1) {
-  const chambres = await chambreModel.find({ fin: { $lt: new Date() } });
-
-  if (!chambres || chambres.length === 0) {
-    throw new ApiError('No chambre disponible', 404);
-  }
-
-  res.status(200).json({ results:chambres.length ,  data: chambres });
- }
-
-
-});
 
 
 
