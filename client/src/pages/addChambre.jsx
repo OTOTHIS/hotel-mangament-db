@@ -9,6 +9,8 @@ export default function AddChambre() {
   const prix = useRef(null);
   const type = useRef(null);
 
+
+  
   useEffect(() => {
     axios
       .get(`${SERVER_LINK}/chambres`)

@@ -57,7 +57,8 @@ export default function Reserver() {
             );
           });
       })
-      .catch((err) => console.log(err));
+      // eslint-disable-next-line no-unused-vars
+      .catch((err) => swal("ERROR", "Check les champs si correct", "error"));
   };
 
   return (
