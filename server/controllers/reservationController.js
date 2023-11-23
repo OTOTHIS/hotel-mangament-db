@@ -15,11 +15,11 @@ exports.getOneReservarion = asyncHandler(async (req, res, next) => {
 });
 
 exports.getAllReservarions = asyncHandler(async (req, res) => {
-  const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 5;
-  const skip = (page - 1) * limit;
-  const reservations = await reservarionModel.find({}).populate({path:'numero' , select:"numero-_id"}).skip(skip).limit(limit);
-  res.status(200).json({ results: reservations.length, page, data: reservations });
+  // const page = req.query.page * 1 || 1;
+  // const limit = req.query.limit * 1 || 5;
+  // const skip = (page - 1) * limit;
+  const reservations = await reservarionModel.find({}).populate({path:'numero' , select:"numero-_id"})
+  res.status(200).json({ results: reservations.length,  data: reservations });
 });
 
 exports.createReservarion = asyncHandler( async (req, res) => {
