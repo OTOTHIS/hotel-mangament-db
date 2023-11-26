@@ -18,7 +18,7 @@ const {
 
 router
   .route("/")
-  .post(createReservationValidator, createReservarion)
+  .post(createReservationValidator , createReservarion) //createReservationValidator,
   .get(getAllReservarions);
 router
   .route("/:id")

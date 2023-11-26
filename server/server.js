@@ -7,6 +7,7 @@ dotenv.config({path:"config.env"})
 const app = express()
 const chambresRoute = require('./routes/chambreRoute')
 const reservaionRoute = require('./routes/reservationRoute')
+const clientRoute = require('./routes/clientRoute')
 
 const ApiError = require('./utils/ApiError')
 const globaleErrors = require('./middelwares/errosMiddel')
@@ -28,6 +29,7 @@ dbConnect();
 
 app.use('/api/v1/chambres' ,chambresRoute )
 app.use('/api/v1/reservation' ,reservaionRoute )
+app.use('/api/v1/client' ,clientRoute )
 
 // Error handling middleware
 

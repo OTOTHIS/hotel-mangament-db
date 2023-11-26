@@ -15,6 +15,7 @@ const reservationShema = new mongoose.Schema({
         required:[true , "chambre numero is required"],
 
     },
+    type:String, formuls:String , nbrNuit:Number ,
     debut : {
         type:Date,
         required:[true , "la date de debut is required"]
