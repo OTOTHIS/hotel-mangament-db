@@ -3,23 +3,35 @@ const morgan = require('morgan')
 const dotenv = require('dotenv')
 const dbConnect = require('./config/db_connect')
 const cors = require('cors')
+const bodyParser = require('body-parser')
+
 dotenv.config({path:"config.env"})
 const app = express()
+
+// Routes
+const clientsRoute = require('./routes/clientsRoute')
 const chambresRoute = require('./routes/chambreRoute')
 const reservaionRoute = require('./routes/reservationRoute')
-const clientRoute = require('./routes/clientRoute')
+const employeesRoute = require('./routes/empRoute')
 
+// Eroor Handling 
 const ApiError = require('./utils/ApiError')
 const globaleErrors = require('./middelwares/errosMiddel')
 
+app.use(bodyParser.json())
 
+app.use(express.urlencoded({ extended: false }));
+
+
+// morgan dev config 
 if(process.env.NODE_ENV === "dev"){
     app.use(morgan('dev'))
 }
 
-
+//public Cors
 app.use(cors("*"))
-app.use(express.json())
+
+
 
 // connect db
 dbConnect();
@@ -29,7 +41,8 @@ dbConnect();
 
 app.use('/api/v1/chambres' ,chambresRoute )
 app.use('/api/v1/reservation' ,reservaionRoute )
-app.use('/api/v1/client' ,clientRoute )
+app.use('/api/v1/client' ,clientsRoute   )
+app.use('/api/v1/employees' ,employeesRoute   )
 
 // Error handling middleware
 

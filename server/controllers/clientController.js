@@ -13,8 +13,8 @@ exports.getOneClient = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ data: client });
 });
-
-exports.getAllClients = asyncHandler(async (req, res) => {
+debugger
+exports.getAllClients= asyncHandler(async (req, res) => {
   let mongooseQuery = ClientModel.find({});
   
 if(req.query.fields) {

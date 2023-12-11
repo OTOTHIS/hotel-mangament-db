@@ -1,18 +1,18 @@
 const router = require("express").Router();
 const {
-  createClient,
-  getAllClients,
-  getOneClient,
-  updateClient,
-  deleteClient,
-} = require("../controllers/clientController"); // Replace with the actual path to your client controller
-const { createClientValidator } = require("../utils/validators/clientValidator"); // Replace with the actual path to your client validators
+  createemployee,
+  getAllemployees,
+  getOneemployee,
+  updateemployee,
+  deleteemployee,
+} = require("../controllers/empController"); // Replace with the actual path to your client controller
+const { createemployeeValidator } = require("../utils/validators/empValidtion");
 
-router.route("/").post(createClientValidator, createClient).get(getAllClients);
+router.route("/").post(createemployeeValidator, createemployee).get(getAllemployees);
 router
   .route("/:id")
-  .get( getOneClient)
-  .put( updateClient)
-  .delete( deleteClient);
+  .get( getOneemployee)
+  .put( updateemployee)
+  .delete(deleteemployee);
 
 module.exports = router;
